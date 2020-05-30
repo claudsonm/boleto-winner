@@ -1,0 +1,42 @@
+{
+    "name": "claudsonm/boletowinner",
+    "description": "Manipule facilmente boletos e contas de convênio.",
+    "keywords": [
+        "claudsonm",
+        "boletowinner"
+    ],
+    "homepage": "https://github.com/claudsonm/boletowinner",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Claudson Martins",
+            "email": "claudson@outlook.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Claudsonm\\BoletoWinner\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Claudsonm\\BoletoWinner\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
