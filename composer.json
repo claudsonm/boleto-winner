@@ -1,18 +1,20 @@
 {
-    "name": "claudsonm/boletowinner",
+    "name": "claudsonm/boleto-winner",
     "description": "Manipule facilmente boletos e contas de convênio.",
     "keywords": [
         "claudsonm",
-        "boletowinner"
+        "boleto-winner",
+        "boleto",
+        "winner"
     ],
-    "homepage": "https://github.com/claudsonm/boletowinner",
+    "homepage": "https://github.com/claudsonm/boleto-winner",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
             "name": "Claudson Martins",
             "email": "claudson@outlook.com",
-            "role": "Developer"
+            "role": "Maintainer"
         }
     ],
     "require": {

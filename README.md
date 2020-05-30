@@ -1,9 +1,9 @@
 # Very short description of the package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/claudsonm/boletowinner.svg?style=flat-square)](https://packagist.org/packages/claudsonm/boletowinner)
-[![Build Status](https://img.shields.io/travis/claudsonm/boletowinner/master.svg?style=flat-square)](https://travis-ci.org/claudsonm/boletowinner)
-[![Quality Score](https://img.shields.io/scrutinizer/g/claudsonm/boletowinner.svg?style=flat-square)](https://scrutinizer-ci.com/g/claudsonm/boletowinner)
-[![Total Downloads](https://img.shields.io/packagist/dt/claudsonm/boletowinner.svg?style=flat-square)](https://packagist.org/packages/claudsonm/boletowinner)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/claudsonm/boleto-winner.svg?style=flat-square)](https://packagist.org/packages/claudsonm/boleto-winner)
+[![Build Status](https://img.shields.io/travis/claudsonm/boleto-winner/master.svg?style=flat-square)](https://travis-ci.org/claudsonm/boleto-winner)
+[![Quality Score](https://img.shields.io/scrutinizer/g/claudsonm/boleto-winner.svg?style=flat-square)](https://scrutinizer-ci.com/g/claudsonm/boleto-winner)
+[![Total Downloads](https://img.shields.io/packagist/dt/claudsonm/boleto-winner.svg?style=flat-square)](https://packagist.org/packages/claudsonm/boleto-winner)
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
@@ -12,7 +12,7 @@ This is where your description should go. Try and limit it to a paragraph or two
 You can install the package via composer:
 
 ```bash
-composer require claudsonm/boletowinner
+composer require claudsonm/boleto-winner
 ```
 
 ## Usage
