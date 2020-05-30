@@ -24,3 +24,45 @@ if (! function_exists('module10')) {
         return (ceil($sum / 10) * 10) - $sum;
     }
 }
+
+if (! function_exists('module11')) {
+    /**
+     * Calculates the module 11 for the given input.
+     *
+     * @example CPF: module11('input', 2, 12, true)
+     * @example CNPJ: module11('input', 2, 9, true)
+     * @example PIS,C/C,Age: module11('input', 1, 9, true)
+     * @example RG SSP-SP: module11('input', 1, 9, false)
+     *
+     * @param string $input                   Input numbers without the verification digit
+     * @param int    $amountOfDigits          Amount of verification digits to calculate
+     * @param int    $multiplicationThreshold The max weight to multiply the numbers
+     * @param bool   $timesTen                Whether or not multiply the sum by ten. True returns the digit, false the rest of the division
+     */
+    function module11(string $input, int $amountOfDigits = 1, int $multiplicationThreshold = 9, bool $timesTen = true): string
+    {
+        if (! $timesTen) {
+            $amountOfDigits = 1;
+        }
+
+        for ($n = 1; $n <= $amountOfDigits; $n++) {
+            $sum = 0;
+            $weight = 2;
+            for ($i = strlen($input) - 1; $i >= 0; $i--) {
+                $sum += $weight * (int) (substr($input, $i, 1));
+                if (++$weight > $multiplicationThreshold) {
+                    $weight = 2;
+                }
+            }
+
+            if ($timesTen) {
+                $digit = fmod(fmod(($sum * 10), 11), 10);
+            } else {
+                $digit = fmod($sum, 11);
+            }
+            $input .= (string) $digit;
+        }
+
+        return substr($input, strlen($input) - $amountOfDigits);
+    }
+}
