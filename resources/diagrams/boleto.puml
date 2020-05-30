@@ -1,0 +1,84 @@
+@startuml
+
+abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+List <|-- AbstractList
+Collection <|-- AbstractCollection
+
+Collection <|- List
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+class ArrayList {
+Object[] elementData
+size()
+}
+
+enum TimeUnit {
+DAYS
+HOURS
+MINUTES
+}
+@enduml
+
+@startuml
+abstract BillFactory {
+    + {abstract} createBill(attributes) : Bill
+}
+
+note left of BillFactory : Bill b = createBill()\nb.isWritableLineValid()
+
+class Winner {
+    + {static} isBarcode(code : string) : boolean
+    + {static} isWritableLine(line : string) : boolean
+}
+
+interface Converter {
+    + toBarcode(bill : Bill) : string
+    + toWritableLine(bill : Bill) : string
+}
+
+interface Validator {
+    + checkWritableLine(bill : Bill) : boolean
+    + checkBarcode(bill : Bill) : boolean
+}
+
+abstract Bill {
+    # writableLine : string
+    # barcode : string
+    - converter : Converter
+    - validator : Validator
+    __
+    + setBarcode(code : string) : Bill
+    + setWritableLine(line : string) : Bill
+    ..
+    + getBarcode(): string
+    + getWritableLine() : string
+    ..
+    + {abstract} isWritableLineValid() : bool
+    + {abstract} isBarcodeValid() : bool
+    # {abstract} barcodeToWritableLine() : void
+    # {abstract} writableLineToBarcode() : void
+}
+
+Winner --> Bill
+
+BillFactory <|-- BoletoFactory
+BillFactory <|-- ConvenioFactory
+
+Bill <|-- Boleto
+Bill <|-- Convenio
+
+Bill -> Converter
+Bill -> Validator
+
+Converter <|-- BoletoConverter
+Converter <|-- ConvenioConverter
+
+Validator <|-- BoletoValidator
+Validator <|-- ConvenioValidator
+
+@enduml
