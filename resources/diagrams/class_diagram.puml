@@ -1,6 +1,7 @@
 @startuml
 abstract BillFactory {
-    + {abstract} createBill(attributes) : Bill
+    + make(...args) : Bill
+    # {abstract} createBill(barcode : string, writableLine : string) : Bill
 }
 
 note left of BillFactory : Bill b = createBill()\nb.isWritableLineValid()
