@@ -19,6 +19,30 @@ class BillFactory
     ];
 
     /**
+     * Get the available bills.
+     *
+     * @var array|string[]
+     */
+    public function getBills(): array
+    {
+        return $this->bills;
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public function load(string $class): void
+    {
+        if (! is_subclass_of($class, Bill::class)) {
+            throw BoletoWinnerException::invalidBillClass($class);
+        }
+
+        if (! in_array($class, $this->bills)) {
+            $this->bills[] = $class;
+        }
+    }
+
+    /**
      * @throws BoletoWinnerException
      */
     public function make(string $barcodeOrWritableLine): Bill
@@ -43,29 +67,5 @@ class BillFactory
         }
 
         throw BoletoWinnerException::invalidInput($barcodeOrWritableLine);
-    }
-
-    /**
-     * Get the available bills.
-     *
-     * @var array|string[]
-     */
-    public function getBills(): array
-    {
-        return $this->bills;
-    }
-
-    /**
-     * @throws BoletoWinnerException
-     */
-    public function load(string $class): void
-    {
-        if (! is_subclass_of($class, Bill::class)) {
-            throw BoletoWinnerException::invalidBillClass($class);
-        }
-
-        if (! in_array($class, $this->bills)) {
-            $this->bills[] = $class;
-        }
     }
 }
