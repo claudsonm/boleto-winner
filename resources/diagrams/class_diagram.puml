@@ -1,14 +1,14 @@
 @startuml
-abstract BillFactory {
-    + make(...args) : Bill
-    # {abstract} createBill(barcode : string, writableLine : string) : Bill
+class Winner << (F,#FF7700) Facade >> {
+    + {static} makeBill(barcodeOrWritableLine : string) : Bill
+    + {static} isValidBarcode(code : string) : boolean
+    + {static} isValidWritableLine(line : string) : boolean
 }
 
-note left of BillFactory : Bill b = createBill()\nb.isWritableLineValid()
-
-class Winner {
-    + {static} isBarcode(code : string) : boolean
-    + {static} isWritableLine(line : string) : boolean
+class BillFactory {
+    + make(barcodeOrWritableLine : string) : Bill
+    + load(class : string) : void
+    + getBills() : string[]
 }
 
 interface Converter {
@@ -39,10 +39,9 @@ abstract Bill {
     # {abstract} writableLineToBarcode() : void
 }
 
-Winner --> Bill
+Winner --> BillFactory
 
-BillFactory <|-- BoletoFactory
-BillFactory <|-- ConvenioFactory
+BillFactory --> Bill
 
 Bill <|-- Boleto
 Bill <|-- Convenio
