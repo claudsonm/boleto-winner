@@ -19,6 +19,28 @@ class BillFactory
     ];
 
     /**
+     * The singleton instance.
+     */
+    private static ?BillFactory $instance = null;
+
+    protected function __construct()
+    {
+        // Preventing direct construction calls with the `new` operator.
+    }
+
+    /**
+     * Get the singleton class instance or creates one if it's not set yet.
+     */
+    public static function getInstance(): self
+    {
+        if (! self::$instance) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
+    }
+
+    /**
      * Get the available bills.
      *
      * @var array|string[]
