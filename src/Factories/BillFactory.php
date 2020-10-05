@@ -64,6 +64,14 @@ class BillFactory
         }
     }
 
+    public function unload(string $class): void
+    {
+        $index = array_search($class, $this->bills);
+        if ($index !== false ){
+            array_splice($this->bills, $index, 1);
+        }
+    }
+
     /**
      * @throws BoletoWinnerException
      */
