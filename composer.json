@@ -5,7 +5,11 @@
         "claudsonm",
         "boleto-winner",
         "boleto",
-        "winner"
+        "winner",
+        "codigo de barras",
+        "barcode",
+        "bar code",
+        "convenio"
     ],
     "homepage": "https://github.com/claudsonm/boleto-winner",
     "license": "MIT",
