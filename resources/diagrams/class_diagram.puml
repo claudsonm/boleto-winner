@@ -5,7 +5,9 @@ class BoletoWinner << (F,#FF7700) Facade >> {
     + {static} isValidWritableLine(writableLine : string) : boolean
     + {static} isValidBoleto(barcodeOrWritableLine : string) : boolean
     + {static} isValidConvenio(barcodeOrWritableLine : string) : boolean
-    + {static} make(barcodeOrWritableLine: string) : Bill
+    + {static} makeBill(barcodeOrWritableLine: string) : Bill
+    + {static} toWritableLine(barcode: string) : string
+    + {static} toBarcode(writableLine: string) : string
 }
 
 class BillFactory << Singleton >> {

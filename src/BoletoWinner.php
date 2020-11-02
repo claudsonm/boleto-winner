@@ -34,6 +34,35 @@ class BoletoWinner
         throw new BadMethodCallException("Method `{$method}` does not exist.");
     }
 
+    /**
+     * @throws BoletoWinnerException
+     */
+    public static function makeBill(string $barcodeOrWritableLine): Bill
+    {
+        return BillFactory::getInstance()
+            ->createFromBarcodeOrWritableLine($barcodeOrWritableLine);
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public static function toWritableLine(string $barcode): string
+    {
+        return BillFactory::getInstance()
+            ->createFromBarcode($barcode)
+            ->getWritableLine();
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public static function toBarcode(string $writableLine): string
+    {
+        return BillFactory::getInstance()
+            ->createFromWritableLine($writableLine)
+            ->getBarcode();
+    }
+
     public static function isValid(string $barcodeOrWritableLine): bool
     {
         try {

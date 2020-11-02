@@ -2,6 +2,9 @@
 
 namespace Claudsonm\BoletoWinner\Tests;
 
+use BadMethodCallException;
+use Claudsonm\BoletoWinner\Bill;
+use Claudsonm\BoletoWinner\Boleto;
 use Claudsonm\BoletoWinner\BoletoWinner;
 use PHPUnit\Framework\TestCase;
 
@@ -97,6 +100,12 @@ class BoletoWinnerTest extends TestCase
 
         $this->assertTrue(BoletoWinner::isValidWritableLine($convenioLine));
         $this->assertTrue(BoletoWinner::isValidWritableLine($boletoLine));
+
+        $invalidConvenioLine = '99990000001 5 24490082089 9 99993193010 4 99453529299 3';
+        $invalidBoletoLine = '99990.00009 03149.039004 04589.842170 8 81850000096961';
+
+        $this->assertFalse(BoletoWinner::isValidWritableLine($invalidConvenioLine));
+        $this->assertFalse(BoletoWinner::isValidWritableLine($invalidBoletoLine));
     }
 
     /** @test */
@@ -107,5 +116,52 @@ class BoletoWinnerTest extends TestCase
 
         $this->assertTrue(BoletoWinner::isValidBarcode($convenioBarcode));
         $this->assertTrue(BoletoWinner::isValidBarcode($boletoBarcode));
+
+        $invalidConvenioBarcode = '99960000000679300418200209414042020102094141';
+        $invalidBoletoBarcode = '99997556500000010500000001234567000000000118';
+
+        $this->assertFalse(BoletoWinner::isValidBarcode($invalidConvenioBarcode));
+        $this->assertFalse(BoletoWinner::isValidBarcode($invalidBoletoBarcode));
+    }
+
+    /** @test */
+    public function it_can_create_a_bill_instance_from_a_barcode_or_writable_line()
+    {
+        $line = '00190.00009 03149.039004 04589.842170 8 81850000096961';
+        $instance = BoletoWinner::makeBill($line);
+
+        $this->assertInstanceOf(Bill::class, $instance);
+        $this->assertInstanceOf(Boleto::class, $instance);
+    }
+
+    /** @test */
+    public function it_gets_the_writable_line_from_the_barcode()
+    {
+        $barcode = '07791821300002000000001112000000500396760672';
+
+        $this->assertSame(
+            '07790001161200000050003967606728182130000200000',
+            BoletoWinner::toWritableLine($barcode)
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_barcode_from_the_writable_line()
+    {
+        $writableLine = '07790.00116 12000.000500 03967.606728 1 82130000200000';
+
+        $this->assertSame(
+            '07791821300002000000001112000000500396760672',
+            BoletoWinner::toBarcode($writableLine)
+        );
+    }
+
+    /** @test */
+    public function it_throws_exception_when_the_method_called_do_not_exists()
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Method `invalidMethod` does not exist.');
+
+        BoletoWinner::invalidMethod();
     }
 }
