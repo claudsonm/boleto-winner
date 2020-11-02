@@ -55,7 +55,7 @@ abstract class Bill
      */
     public function isWritableLineValid(): bool
     {
-        return $this->validator->verifyWritableLine($this);
+        return $this->validator->verifyWritableLine($this->writableLine);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class Bill
      */
     public function isBarcodeValid(): bool
     {
-        return $this->validator->verifyBarcode($this);
+        return $this->validator->verifyBarcode($this->barcode);
     }
 
     /**
