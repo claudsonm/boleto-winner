@@ -44,16 +44,6 @@ class BillFactory
     }
 
     /**
-     * Get the available bills.
-     *
-     * @var array|string[]
-     */
-    public function getBills(): array
-    {
-        return $this->bills;
-    }
-
-    /**
      * Returns an instance of the Bill class for the given type.
      *
      * @throws BoletoWinnerException
@@ -77,7 +67,7 @@ class BillFactory
             throw BoletoWinnerException::inputRequired();
         }
 
-        foreach ($this->getBills() as $billClass) {
+        foreach ($this->bills as $billClass) {
             $bill = new $billClass();
             $bill->setBarcode($input);
             if ($bill->isBarcodeValid()) {
@@ -104,7 +94,7 @@ class BillFactory
             throw BoletoWinnerException::inputRequired();
         }
 
-        foreach ($this->getBills() as $billClass) {
+        foreach ($this->bills as $billClass) {
             $bill = new $billClass();
             $bill->setWritableLine($input);
             if ($bill->isWritableLineValid()) {
@@ -125,7 +115,7 @@ class BillFactory
             throw BoletoWinnerException::inputRequired();
         }
 
-        foreach ($this->getBills() as $billClass) {
+        foreach ($this->bills as $billClass) {
             $bill = new $billClass();
             $bill->setBarcode($input);
             if ($bill->isBarcodeValid()) {

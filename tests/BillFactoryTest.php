@@ -30,15 +30,6 @@ class BillFactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_checks_that_boleto_and_convenio_are_loaded_by_default_in_the_available_bills()
-    {
-        $bills = $this->factory->getBills();
-
-        $this->assertTrue(in_array(Boleto::class, $bills));
-        $this->assertTrue(in_array(Convenio::class, $bills));
-    }
-
-    /** @test */
     public function it_throws_exception_when_an_empty_string_is_given()
     {
         $this->expectException(BoletoWinnerException::class);
