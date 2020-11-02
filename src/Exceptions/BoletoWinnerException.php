@@ -20,4 +20,9 @@ class BoletoWinnerException extends \Exception
 
         return new static("The class `{$class}` must be a subclass of `{$superclass}`.");
     }
+
+    public static function unsupportedType(string $type): self
+    {
+        return new static("The type `{$type}` is not supported, no class is associated with it.");
+    }
 }

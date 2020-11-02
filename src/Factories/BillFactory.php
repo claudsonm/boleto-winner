@@ -78,9 +78,23 @@ class BillFactory
     }
 
     /**
+     * Returns an instance of the Bill class for the given type.
+     *
      * @throws BoletoWinnerException
      */
-    public function make(string $barcodeOrWritableLine): Bill
+    public function getBillInstance(string $type): Bill
+    {
+        if (! isset($this->bills[$type])) {
+            throw BoletoWinnerException::unsupportedType($type);
+        }
+
+        return new $this->bills[$type]();
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public function parse(string $barcodeOrWritableLine): Bill
     {
         $input = preg_replace('/[^0-9]/', '', $barcodeOrWritableLine);
         if (empty($input)) {
