@@ -54,30 +54,6 @@ class BillFactory
     }
 
     /**
-     * Register a bill with its type and class name.
-     *
-     * @throws BoletoWinnerException
-     */
-    public function register(string $type, string $class): void
-    {
-        if (! is_a($class, Bill::class, true)) {
-            throw BoletoWinnerException::invalidBillClass($class);
-        }
-
-        $this->bills[$type] = $class;
-    }
-
-    /**
-     * Removes a bill from the supported classes.
-     */
-    public function unregister(string $type): void
-    {
-        if (isset($this->bills[$type])) {
-            unset($this->bills[$type]);
-        }
-    }
-
-    /**
      * Returns an instance of the Bill class for the given type.
      *
      * @throws BoletoWinnerException

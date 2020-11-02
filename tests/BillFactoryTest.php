@@ -20,13 +20,6 @@ class BillFactoryTest extends TestCase
         $this->factory = BillFactory::getInstance();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->factory->unregister('dummy');
-    }
-
     /** @test */
     public function it_ensures_the_factory_class_is_a_singleton()
     {
@@ -43,39 +36,6 @@ class BillFactoryTest extends TestCase
 
         $this->assertTrue(in_array(Boleto::class, $bills));
         $this->assertTrue(in_array(Convenio::class, $bills));
-    }
-
-    /** @test */
-    public function it_cant_load_classes_that_dont_extends_the_bill_class()
-    {
-        $class = get_class(new class() {
-        });
-
-        $this->expectException(BoletoWinnerException::class);
-        $this->expectExceptionMessage("The class `{$class}` must be a subclass of `Claudsonm\\BoletoWinner\\Bill`.");
-
-        $this->factory->register('new', $class);
-    }
-
-    /** @test */
-    public function it_can_load_subclasses_of_bill()
-    {
-        $this->factory->register('dummy', DummyBill::class);
-        $bills = $this->factory->getBills();
-
-        $this->assertCount(3, $bills);
-        $this->assertTrue(in_array(DummyBill::class, $bills));
-    }
-
-    /** @test */
-    public function it_doesnt_load_the_same_bill_twice()
-    {
-        $this->factory->register('dummy', DummyBill::class);
-        $this->factory->register('dummy', DummyBill::class);
-        $bills = $this->factory->getBills();
-
-        $this->assertCount(3, $bills);
-        $this->assertTrue(in_array(DummyBill::class, $bills));
     }
 
     /** @test */
