@@ -26,12 +26,12 @@ class DummyBill extends Bill
     protected function useValidator(): Validator
     {
         return new class() implements Validator {
-            public function verifyWritableLine(Bill $bill): bool
+            public function verifyWritableLine(string $writableLine): bool
             {
                 return true;
             }
 
-            public function verifyBarcode(Bill $bill): bool
+            public function verifyBarcode(string $barcode): bool
             {
                 return true;
             }
