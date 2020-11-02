@@ -82,7 +82,7 @@ class BillFactory
      *
      * @throws BoletoWinnerException
      */
-    public function getBillInstanceFor(string $type): Bill
+    public function createBillInstance(string $type): Bill
     {
         if (! isset($this->bills[$type])) {
             throw BoletoWinnerException::unsupportedType($type);
@@ -94,7 +94,7 @@ class BillFactory
     /**
      * @throws BoletoWinnerException
      */
-    public function parse(string $barcodeOrWritableLine): Bill
+    public function createBillInstanceFromString(string $barcodeOrWritableLine): Bill
     {
         $input = preg_replace('/[^0-9]/', '', $barcodeOrWritableLine);
         if (empty($input)) {

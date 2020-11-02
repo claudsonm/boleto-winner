@@ -84,7 +84,7 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage('You must provide a numeric string.');
 
-        $this->factory->parse('');
+        $this->factory->createBillInstanceFromString('');
     }
 
     /** @test */
@@ -93,7 +93,7 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage('You must provide a numeric string.');
 
-        $this->factory->parse('only text given');
+        $this->factory->createBillInstanceFromString('only text given');
     }
 
     /** @test */
@@ -102,13 +102,13 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage('The value `123abc456d` given is not a valid barcode or writable line.');
 
-        $this->factory->parse('123abc456d');
+        $this->factory->createBillInstanceFromString('123abc456d');
     }
 
     /** @test */
     public function its_creates_a_boleto_object_from_a_valid_numeric_writable_line()
     {
-        $bill = $this->factory->parse('07790001161200000050003967606728182130000200000');
+        $bill = $this->factory->createBillInstanceFromString('07790001161200000050003967606728182130000200000');
 
         $this->assertInstanceOf(Boleto::class, $bill);
         $this->assertSame('07791821300002000000001112000000500396760672', $bill->getBarcode());
@@ -117,7 +117,7 @@ class BillFactoryTest extends TestCase
     /** @test */
     public function its_creates_a_convenio_object_from_a_valid_numeric_writable_line()
     {
-        $bill = $this->factory->parse('846200000012379800820894999931930112030367115992');
+        $bill = $this->factory->createBillInstanceFromString('846200000012379800820894999931930112030367115992');
 
         $this->assertInstanceOf(Convenio::class, $bill);
         $this->assertSame('84620000001379800820899999319301103036711599', $bill->getBarcode());
@@ -126,7 +126,7 @@ class BillFactoryTest extends TestCase
     /** @test */
     public function it_creates_a_boleto_object_from_a_valid_formatted_writable_line()
     {
-        $bill = $this->factory->parse('23793.38128 60023.848041 44000.063303 1 82130000300000');
+        $bill = $this->factory->createBillInstanceFromString('23793.38128 60023.848041 44000.063303 1 82130000300000');
 
         $this->assertInstanceOf(Boleto::class, $bill);
         $this->assertSame('23791821300003000003381260023848044400006330', $bill->getBarcode());
@@ -135,7 +135,7 @@ class BillFactoryTest extends TestCase
     /** @test */
     public function it_creates_a_convenio_object_from_a_valid_formatted_writable_line()
     {
-        $bill = $this->factory->parse('84690000001 5 24490082089 9 99993193010 4 99453529299 3');
+        $bill = $this->factory->createBillInstanceFromString('84690000001 5 24490082089 9 99993193010 4 99453529299 3');
 
         $this->assertInstanceOf(Convenio::class, $bill);
         $this->assertSame('84690000001244900820899999319301099453529299', $bill->getBarcode());
@@ -144,7 +144,7 @@ class BillFactoryTest extends TestCase
     /** @test */
     public function its_creates_a_boleto_object_from_a_valid_barcode()
     {
-        $bill = $this->factory->parse('00199000000000969610000003149039000458984217');
+        $bill = $this->factory->createBillInstanceFromString('00199000000000969610000003149039000458984217');
 
         $this->assertInstanceOf(Boleto::class, $bill);
         $this->assertSame('00190000090314903900404589842170900000000096961', $bill->getWritableLine());
@@ -153,7 +153,7 @@ class BillFactoryTest extends TestCase
     /** @test */
     public function its_creates_a_convenio_object_from_a_valid_barcode()
     {
-        $bill = $this->factory->parse('84660000001249800820899999319301093721978999');
+        $bill = $this->factory->createBillInstanceFromString('84660000001249800820899999319301093721978999');
 
         $this->assertInstanceOf(Convenio::class, $bill);
         $this->assertSame('846600000018249800820899999931930104937219789990', $bill->getWritableLine());
@@ -167,7 +167,7 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage("The value `{$invalidLine}` given is not a valid barcode or writable line.");
 
-        $this->factory->parse($invalidLine);
+        $this->factory->createBillInstanceFromString($invalidLine);
     }
 
     /** @test */
@@ -178,7 +178,7 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage("The value `{$invalidLine}` given is not a valid barcode or writable line.");
 
-        $this->factory->parse($invalidLine);
+        $this->factory->createBillInstanceFromString($invalidLine);
     }
 
     /** @test */
@@ -189,7 +189,7 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage("The value `{$invalidBarcode}` given is not a valid barcode or writable line.");
 
-        $this->factory->parse($invalidBarcode);
+        $this->factory->createBillInstanceFromString($invalidBarcode);
     }
 
     /** @test */
@@ -200,7 +200,7 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage("The value `{$invalidBarcode}` given is not a valid barcode or writable line.");
 
-        $this->factory->parse($invalidBarcode);
+        $this->factory->createBillInstanceFromString($invalidBarcode);
     }
 
     /** @test */
@@ -209,14 +209,14 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage('The type `none` is not supported, no class is associated with it.');
 
-        $this->factory->getBillInstanceFor('none');
+        $this->factory->createBillInstance('none');
     }
 
     /** @test */
     public function it_gets_the_bill_instance_for_a_given_type()
     {
-        $boletoClass = $this->factory->getBillInstanceFor('boleto');
-        $convenioClass = $this->factory->getBillInstanceFor('convenio');
+        $boletoClass = $this->factory->createBillInstance('boleto');
+        $convenioClass = $this->factory->createBillInstance('convenio');
 
         $this->assertInstanceOf(Boleto::class, $boletoClass);
         $this->assertInstanceOf(Convenio::class, $convenioClass);
