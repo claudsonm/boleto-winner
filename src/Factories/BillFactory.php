@@ -82,7 +82,7 @@ class BillFactory
      *
      * @throws BoletoWinnerException
      */
-    public function getBillInstance(string $type): Bill
+    public function getBillInstanceFor(string $type): Bill
     {
         if (! isset($this->bills[$type])) {
             throw BoletoWinnerException::unsupportedType($type);

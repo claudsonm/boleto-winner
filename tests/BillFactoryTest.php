@@ -209,14 +209,14 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage('The type `none` is not supported, no class is associated with it.');
 
-        $this->factory->getBillInstance('none');
+        $this->factory->getBillInstanceFor('none');
     }
 
     /** @test */
     public function it_gets_the_bill_instance_for_a_given_type()
     {
-        $boletoClass = $this->factory->getBillInstance('boleto');
-        $convenioClass = $this->factory->getBillInstance('convenio');
+        $boletoClass = $this->factory->getBillInstanceFor('boleto');
+        $convenioClass = $this->factory->getBillInstanceFor('convenio');
 
         $this->assertInstanceOf(Boleto::class, $boletoClass);
         $this->assertInstanceOf(Convenio::class, $convenioClass);
