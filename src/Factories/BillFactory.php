@@ -3,19 +3,20 @@
 namespace Claudsonm\BoletoWinner\Factories;
 
 use Claudsonm\BoletoWinner\Bill;
+use Claudsonm\BoletoWinner\Boleto;
+use Claudsonm\BoletoWinner\Convenio;
 use Claudsonm\BoletoWinner\Exceptions\BoletoWinnerException;
 
 class BillFactory
 {
     /**
-     * Bills available to be constructed. New classes can be added dynamically
-     * using the `load` method.
+     * Bills supported.
      *
      * @var array|string[]
      */
     protected array $bills = [
-        'Claudsonm\BoletoWinner\Boleto',
-        'Claudsonm\BoletoWinner\Convenio',
+        'boleto' => Boleto::class,
+        'convenio' => Convenio::class,
     ];
 
     /**
@@ -33,9 +34,11 @@ class BillFactory
      */
     public static function getInstance(): self
     {
-        if (! self::$instance) {
-            self::$instance = new static();
+        if (self::$instance) {
+            return self::$instance;
         }
+
+        self::$instance = new static();
 
         return self::$instance;
     }
@@ -51,24 +54,26 @@ class BillFactory
     }
 
     /**
+     * Register a bill with its type and class name.
+     *
      * @throws BoletoWinnerException
      */
-    public function load(string $class): void
+    public function register(string $type, string $class): void
     {
-        if (! is_subclass_of($class, Bill::class)) {
+        if (! is_a($class, Bill::class, true)) {
             throw BoletoWinnerException::invalidBillClass($class);
         }
 
-        if (! in_array($class, $this->bills)) {
-            $this->bills[] = $class;
-        }
+        $this->bills[$type] = $class;
     }
 
-    public function unload(string $class): void
+    /**
+     * Removes a bill from the supported classes.
+     */
+    public function unregister(string $type): void
     {
-        $index = array_search($class, $this->bills);
-        if ($index !== false ){
-            array_splice($this->bills, $index, 1);
+        if (isset($this->bills[$type])) {
+            unset($this->bills[$type]);
         }
     }
 

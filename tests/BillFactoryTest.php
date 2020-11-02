@@ -24,7 +24,7 @@ class BillFactoryTest extends TestCase
     {
         parent::tearDown();
 
-        $this->factory->unload(DummyBill::class);
+        $this->factory->unregister('dummy');
     }
 
     /** @test */
@@ -54,13 +54,13 @@ class BillFactoryTest extends TestCase
         $this->expectException(BoletoWinnerException::class);
         $this->expectExceptionMessage("The class `{$class}` must be a subclass of `Claudsonm\\BoletoWinner\\Bill`.");
 
-        $this->factory->load($class);
+        $this->factory->register('new', $class);
     }
 
     /** @test */
     public function it_can_load_subclasses_of_bill()
     {
-        $this->factory->load(DummyBill::class);
+        $this->factory->register('dummy', DummyBill::class);
         $bills = $this->factory->getBills();
 
         $this->assertCount(3, $bills);
@@ -70,8 +70,8 @@ class BillFactoryTest extends TestCase
     /** @test */
     public function it_doesnt_load_the_same_bill_twice()
     {
-        $this->factory->load(DummyBill::class);
-        $this->factory->load(DummyBill::class);
+        $this->factory->register('dummy', DummyBill::class);
+        $this->factory->register('dummy', DummyBill::class);
         $bills = $this->factory->getBills();
 
         $this->assertCount(3, $bills);

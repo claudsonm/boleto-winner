@@ -16,8 +16,8 @@ class BoletoWinnerException extends \Exception
 
     public static function invalidBillClass(string $class): self
     {
-        $superclass = 'Claudsonm\BoletoWinner\Bill';
-        
+        $superclass = \Claudsonm\BoletoWinner\Bill::class;
+
         return new static("The class `{$class}` must be a subclass of `{$superclass}`.");
     }
 }
