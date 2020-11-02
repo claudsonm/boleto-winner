@@ -9,8 +9,6 @@ use Claudsonm\BoletoWinner\Factories\BillFactory;
 /**
  * @method static bool isValidBoleto(string $barcodeOrWritableLine)
  * @method static bool isValidConvenio(string $barcodeOrWritableLine)
- * @method static bool isValidBarcode(string $barcode)
- * @method static bool isValidWritableLine(string $barcode)
  *
  * @see BillFactory
  */
@@ -33,17 +31,35 @@ class BoletoWinner
             return self::handleIsValidTypeCall($method, $arguments);
         }
 
-        if (! method_exists(BillFactory::class, $method)) {
-            throw new BadMethodCallException("Method `{$method}` does not exist.");
-        }
-
-        return BillFactory::getInstance()->{$method}(...$arguments);
+        throw new BadMethodCallException("Method `{$method}` does not exist.");
     }
 
     public static function isValid(string $barcodeOrWritableLine): bool
     {
         try {
-            BillFactory::getInstance()->createBillInstanceFromString($barcodeOrWritableLine);
+            BillFactory::getInstance()->createFromBarcodeOrWritableLine($barcodeOrWritableLine);
+
+            return true;
+        } catch (BoletoWinnerException $exception) {
+            return false;
+        }
+    }
+
+    public static function isValidWritableLine(string $writableLine): bool
+    {
+        try {
+            BillFactory::getInstance()->createFromWritableLine($writableLine);
+
+            return true;
+        } catch (BoletoWinnerException $exception) {
+            return false;
+        }
+    }
+
+    public static function isValidBarcode(string $barcode): bool
+    {
+        try {
+            BillFactory::getInstance()->createFromBarcode($barcode);
 
             return true;
         } catch (BoletoWinnerException $exception) {
@@ -57,10 +73,15 @@ class BoletoWinner
     private static function handleIsValidTypeCall(string $method, array $arguments): bool
     {
         $type = strtolower(substr($method, 7));
-        $input = preg_replace('/[^0-9]/', '', ...$arguments);
+        $input = self::sanitizeInput(...$arguments);
         $billClass = BillFactory::getInstance()->createBillInstance($type);
         $billClass->setBarcode($input)->setWritableLine($input);
 
         return $billClass->isBarcodeValid() || $billClass->isWritableLineValid();
+    }
+
+    private static function sanitizeInput(string $input): string
+    {
+        return preg_replace('/[^0-9]/', '', $input);
     }
 }

@@ -88,4 +88,24 @@ class BoletoWinnerTest extends TestCase
         $this->assertFalse(BoletoWinner::isValidBoleto($line));
         $this->assertTrue(BoletoWinner::isValidConvenio($line));
     }
+
+    /** @test */
+    public function it_checks_if_the_entry_is_a_valid_writable_line_of_any_bill_type()
+    {
+        $convenioLine = '84690000001 5 24490082089 9 99993193010 4 99453529299 3';
+        $boletoLine = '00190.00009 03149.039004 04589.842170 8 81850000096961';
+
+        $this->assertTrue(BoletoWinner::isValidWritableLine($convenioLine));
+        $this->assertTrue(BoletoWinner::isValidWritableLine($boletoLine));
+    }
+
+    /** @test */
+    public function it_checks_if_the_entry_is_a_valid_barcode_of_any_bill_type()
+    {
+        $convenioBarcode = '82660000000679300418200209414042020102094141';
+        $boletoBarcode = '00197556500000010500000001234567000000000118';
+
+        $this->assertTrue(BoletoWinner::isValidBarcode($convenioBarcode));
+        $this->assertTrue(BoletoWinner::isValidBarcode($boletoBarcode));
+    }
 }

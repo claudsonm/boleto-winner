@@ -94,21 +94,21 @@ class BillFactory
     /**
      * @throws BoletoWinnerException
      */
-    public function createBillInstanceFromString(string $barcodeOrWritableLine): Bill
+    public function createFromBarcodeOrWritableLine(string $barcodeOrWritableLine): Bill
     {
-        $input = preg_replace('/[^0-9]/', '', $barcodeOrWritableLine);
+        $input = $this->sanitizeInput($barcodeOrWritableLine);
         if (empty($input)) {
             throw BoletoWinnerException::inputRequired();
         }
 
-        foreach ($this->getBills() as $bill) {
-            $bill = new $bill();
+        foreach ($this->getBills() as $billClass) {
+            $bill = new $billClass();
             $bill->setBarcode($input);
             if ($bill->isBarcodeValid()) {
                 return $bill;
             }
 
-            $bill = new $bill();
+            $bill = new $billClass();
             $bill->setWritableLine($input);
             if ($bill->isWritableLineValid()) {
                 return $bill;
@@ -116,5 +116,52 @@ class BillFactory
         }
 
         throw BoletoWinnerException::invalidInput($barcodeOrWritableLine);
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public function createFromWritableLine(string $writableLine): Bill
+    {
+        $input = $this->sanitizeInput($writableLine);
+        if (empty($input)) {
+            throw BoletoWinnerException::inputRequired();
+        }
+
+        foreach ($this->getBills() as $billClass) {
+            $bill = new $billClass();
+            $bill->setWritableLine($input);
+            if ($bill->isWritableLineValid()) {
+                return $bill;
+            }
+        }
+
+        throw BoletoWinnerException::invalidInput($writableLine);
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public function createFromBarcode(string $barcode): Bill
+    {
+        $input = $this->sanitizeInput($barcode);
+        if (empty($input)) {
+            throw BoletoWinnerException::inputRequired();
+        }
+
+        foreach ($this->getBills() as $billClass) {
+            $bill = new $billClass();
+            $bill->setBarcode($input);
+            if ($bill->isBarcodeValid()) {
+                return $bill;
+            }
+        }
+
+        throw BoletoWinnerException::invalidInput($barcode);
+    }
+
+    private function sanitizeInput(string $barcodeOrWritableLine): string
+    {
+        return preg_replace('/[^0-9]/', '', $barcodeOrWritableLine);
     }
 }
