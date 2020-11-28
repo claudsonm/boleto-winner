@@ -2,14 +2,8 @@
     "name": "claudsonm/boleto-winner",
     "description": "Manipule facilmente boletos e contas de convênio.",
     "keywords": [
-        "claudsonm",
-        "boleto-winner",
-        "boleto",
-        "winner",
-        "codigo de barras",
-        "barcode",
-        "bar code",
-        "convenio"
+        "claudsonm", "boleto-winner", "boleto", "winner", "codigo de barras",
+        "barcode", "bar code", "convenio", "validator"
     ],
     "homepage": "https://github.com/claudsonm/boleto-winner",
     "license": "MIT",
