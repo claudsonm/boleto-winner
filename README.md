@@ -1,9 +1,9 @@
-# Very short description of the package
+# Boleto Winner
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/claudsonm/boleto-winner.svg?style=flat-square)](https://packagist.org/packages/claudsonm/boleto-winner)
-[![Build Status](https://img.shields.io/travis/claudsonm/boleto-winner/master.svg?style=flat-square)](https://travis-ci.org/claudsonm/boleto-winner)
-[![Quality Score](https://img.shields.io/scrutinizer/g/claudsonm/boleto-winner.svg?style=flat-square)](https://scrutinizer-ci.com/g/claudsonm/boleto-winner)
-[![Total Downloads](https://img.shields.io/packagist/dt/claudsonm/boleto-winner.svg?style=flat-square)](https://packagist.org/packages/claudsonm/boleto-winner)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/claudsonm/boleto-winner?logo=composer)](https://packagist.org/packages/claudsonm/boleto-winner)
+[![CI](https://img.shields.io/github/workflow/status/claudsonm/boleto-winner/CI?label=CI&logo=github-actions&logoColor=fff&labelColor=2088FF)](https://github.com/claudsonm/boleto-winner/actions?query=workflow%3ACI+branch%3Amaster)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/claudsonm/boleto-winner?logo=scrutinizer-CI&labelColor=8A9296&logoColor=fff)](https://scrutinizer-ci.com/g/claudsonm/boleto-winner/?branch=master)
+[![Code Quality](https://img.shields.io/scrutinizer/quality/g/claudsonm/boleto-winner?logo=scrutinizer-ci&labelColor=8A9296&logoColor=fff)](https://scrutinizer-ci.com/g/claudsonm/boleto-winner/?branch=master)
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
