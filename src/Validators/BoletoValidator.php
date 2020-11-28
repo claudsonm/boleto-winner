@@ -9,9 +9,11 @@ class BoletoValidator implements Validator
      */
     public function verifyWritableLine(string $writableLine): bool
     {
-        $blocks[] = substr($writableLine, 0, 10);
-        $blocks[] = substr($writableLine, 10, 11);
-        $blocks[] = substr($writableLine, 21, 11);
+        $blocks = [
+            substr($writableLine, 0, 10),
+            substr($writableLine, 10, 11),
+            substr($writableLine, 21, 11),
+        ];
 
         $blocksValidated = 0;
         foreach ($blocks as $block) {
