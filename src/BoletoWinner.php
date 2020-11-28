@@ -102,7 +102,7 @@ class BoletoWinner
     private static function handleIsValidTypeCall(string $method, array $arguments): bool
     {
         $type = strtolower(substr($method, 7));
-        $input = self::sanitizeInput(...$arguments);
+        $input = self::sanitizeInput(array_shift($arguments));
         $billClass = BillFactory::getInstance()->createBillInstance($type);
         $billClass->setBarcode($input)->setWritableLine($input);
 
