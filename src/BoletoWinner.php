@@ -3,13 +3,12 @@
 namespace Claudsonm\BoletoWinner;
 
 use BadMethodCallException;
-use Claudsonm\BoletoWinner\Factories\BillFactory;
 use Claudsonm\BoletoWinner\Exceptions\BoletoWinnerException;
+use Claudsonm\BoletoWinner\Factories\BillFactory;
 
 /**
- * @method static array|string[] getBills()
- * @method static void load(string $class)
- * @method static Bill make(string $barcodeOrWritableLine)
+ * @method static bool isValidBoleto(string $barcodeOrWritableLine)
+ * @method static bool isValidConvenio(string $barcodeOrWritableLine)
  *
  * @see BillFactory
  */
@@ -22,24 +21,96 @@ class BoletoWinner
      * @param array  $arguments
      *
      * @throws BadMethodCallException
+     * @throws BoletoWinnerException
+     *
+     * @return bool
      */
     public static function __callStatic($method, $arguments)
     {
-        if (! method_exists(BillFactory::class, $method)) {
-            throw new BadMethodCallException("Method `{$method}` does not exist.");
+        if (starts_with('isValid', $method)) {
+            return self::handleIsValidTypeCall($method, $arguments);
         }
 
-        return (new BillFactory())->{$method}(...$arguments);
+        throw new BadMethodCallException("Method `{$method}` does not exist.");
     }
 
-    public static function isValid(string $barcode): bool
+    /**
+     * @throws BoletoWinnerException
+     */
+    public static function makeBill(string $barcodeOrWritableLine): Bill
+    {
+        return BillFactory::getInstance()
+            ->createFromBarcodeOrWritableLine($barcodeOrWritableLine);
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public static function toWritableLine(string $barcode): string
+    {
+        return BillFactory::getInstance()
+            ->createFromBarcode($barcode)
+            ->getWritableLine();
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public static function toBarcode(string $writableLine): string
+    {
+        return BillFactory::getInstance()
+            ->createFromWritableLine($writableLine)
+            ->getBarcode();
+    }
+
+    public static function isValid(string $barcodeOrWritableLine): bool
     {
         try {
-            self::make($barcode);
+            BillFactory::getInstance()->createFromBarcodeOrWritableLine($barcodeOrWritableLine);
 
             return true;
         } catch (BoletoWinnerException $exception) {
             return false;
         }
+    }
+
+    public static function isValidWritableLine(string $writableLine): bool
+    {
+        try {
+            BillFactory::getInstance()->createFromWritableLine($writableLine);
+
+            return true;
+        } catch (BoletoWinnerException $exception) {
+            return false;
+        }
+    }
+
+    public static function isValidBarcode(string $barcode): bool
+    {
+        try {
+            BillFactory::getInstance()->createFromBarcode($barcode);
+
+            return true;
+        } catch (BoletoWinnerException $exception) {
+            return false;
+        }
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    private static function handleIsValidTypeCall(string $method, array $arguments): bool
+    {
+        $type = strtolower(substr($method, 7));
+        $input = self::sanitizeInput(array_shift($arguments));
+        $billClass = BillFactory::getInstance()->createBillInstance($type);
+        $billClass->setBarcode($input)->setWritableLine($input);
+
+        return $billClass->isBarcodeValid() || $billClass->isWritableLineValid();
+    }
+
+    private static function sanitizeInput(string $input): string
+    {
+        return preg_replace('/[^0-9]/', '', $input);
     }
 }

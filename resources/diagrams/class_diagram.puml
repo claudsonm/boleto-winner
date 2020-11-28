@@ -1,14 +1,22 @@
 @startuml
-class Winner << (F,#FF7700) Facade >> {
-    + {static} makeBill(barcodeOrWritableLine : string) : Bill
-    + {static} isValidBarcode(code : string) : boolean
-    + {static} isValidWritableLine(line : string) : boolean
+class BoletoWinner << (F,#FF7700) Facade >> {
+    + {static} isValid(barcodeOrWritableLine : string) : boolean
+    + {static} isValidBarcode(barcode : string) : boolean
+    + {static} isValidWritableLine(writableLine : string) : boolean
+    + {static} isValidBoleto(barcodeOrWritableLine : string) : boolean
+    + {static} isValidConvenio(barcodeOrWritableLine : string) : boolean
+    + {static} makeBill(barcodeOrWritableLine: string) : Bill
+    + {static} toWritableLine(barcode: string) : string
+    + {static} toBarcode(writableLine: string) : string
 }
 
-class BillFactory {
-    + make(barcodeOrWritableLine : string) : Bill
-    + load(class : string) : void
-    + getBills() : string[]
+class BillFactory << Singleton >> {
+    # bills : array
+    + {static} getInstance() : BillFactory
+    + createBillInstance(type : string) : Bill
+    + createFromBarcodeOrWritableLine(barcodeOrWritableLine : string) : Bill
+    + createFromWritableLine(writableLine : string) : Bill
+    + createFromBarcode(barcode : string) : Bill
 }
 
 interface Converter {
@@ -39,7 +47,7 @@ abstract Bill {
     # {abstract} writableLineToBarcode() : void
 }
 
-Winner --> BillFactory
+BoletoWinner --> BillFactory
 
 BillFactory --> Bill
 

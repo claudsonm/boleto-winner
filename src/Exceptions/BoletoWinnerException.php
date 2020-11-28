@@ -11,13 +11,11 @@ class BoletoWinnerException extends \Exception
 
     public static function inputRequired(): self
     {
-        return new static("You must provide a numeric string.");
+        return new static('You must provide a numeric string.');
     }
 
-    public static function invalidBillClass(string $class): self
+    public static function unsupportedType(string $type): self
     {
-        $superclass = 'Claudsonm\BoletoWinner\Bill';
-        
-        return new static("The class `{$class}` must be a subclass of `{$superclass}`.");
+        return new static("The type `{$type}` is not supported, no class is associated with it.");
     }
 }

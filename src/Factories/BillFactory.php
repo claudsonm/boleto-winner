@@ -3,63 +3,74 @@
 namespace Claudsonm\BoletoWinner\Factories;
 
 use Claudsonm\BoletoWinner\Bill;
+use Claudsonm\BoletoWinner\Boleto;
+use Claudsonm\BoletoWinner\Convenio;
 use Claudsonm\BoletoWinner\Exceptions\BoletoWinnerException;
 
 class BillFactory
 {
     /**
-     * Bills available to be constructed. New classes can be added dynamically
-     * using the `load` method.
+     * Bills supported.
      *
      * @var array|string[]
      */
     protected array $bills = [
-        'Claudsonm\BoletoWinner\Boleto',
-        'Claudsonm\BoletoWinner\Convenio',
+        'boleto' => Boleto::class,
+        'convenio' => Convenio::class,
     ];
 
     /**
-     * Get the available bills.
+     * The singleton instance.
+     */
+    private static ?BillFactory $instance = null;
+
+    protected function __construct()
+    {
+        // Preventing direct construction calls with the `new` operator.
+    }
+
+    /**
+     * Get the singleton class instance or creates one if it's not set yet.
+     */
+    public static function getInstance(): self
+    {
+        if (self::$instance) {
+            return self::$instance;
+        }
+
+        self::$instance = new static();
+
+        return self::$instance;
+    }
+
+    /**
+     * Returns an instance of the Bill class for the given type.
      *
-     * @var array|string[]
+     * @throws BoletoWinnerException
      */
-    public function getBills(): array
+    public function createBillInstance(string $type): Bill
     {
-        return $this->bills;
+        if (! isset($this->bills[$type])) {
+            throw BoletoWinnerException::unsupportedType($type);
+        }
+
+        return new $this->bills[$type]();
     }
 
     /**
      * @throws BoletoWinnerException
      */
-    public function load(string $class): void
+    public function createFromBarcodeOrWritableLine(string $barcodeOrWritableLine): Bill
     {
-        if (! is_subclass_of($class, Bill::class)) {
-            throw BoletoWinnerException::invalidBillClass($class);
-        }
-
-        if (! in_array($class, $this->bills)) {
-            $this->bills[] = $class;
-        }
-    }
-
-    /**
-     * @throws BoletoWinnerException
-     */
-    public function make(string $barcodeOrWritableLine): Bill
-    {
-        $input = preg_replace('/[^0-9]/', '', $barcodeOrWritableLine);
-        if (empty($input)) {
-            throw BoletoWinnerException::inputRequired();
-        }
-
-        foreach ($this->getBills() as $bill) {
-            $bill = new $bill();
+        $input = $this->sanitizeInput($barcodeOrWritableLine);
+        foreach ($this->bills as $billClass) {
+            $bill = new $billClass();
             $bill->setBarcode($input);
             if ($bill->isBarcodeValid()) {
                 return $bill;
             }
 
-            $bill = new $bill();
+            $bill = new $billClass();
             $bill->setWritableLine($input);
             if ($bill->isWritableLineValid()) {
                 return $bill;
@@ -67,5 +78,52 @@ class BillFactory
         }
 
         throw BoletoWinnerException::invalidInput($barcodeOrWritableLine);
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public function createFromWritableLine(string $writableLine): Bill
+    {
+        $input = $this->sanitizeInput($writableLine);
+        foreach ($this->bills as $billClass) {
+            $bill = new $billClass();
+            $bill->setWritableLine($input);
+            if ($bill->isWritableLineValid()) {
+                return $bill;
+            }
+        }
+
+        throw BoletoWinnerException::invalidInput($writableLine);
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    public function createFromBarcode(string $barcode): Bill
+    {
+        $input = $this->sanitizeInput($barcode);
+        foreach ($this->bills as $billClass) {
+            $bill = new $billClass();
+            $bill->setBarcode($input);
+            if ($bill->isBarcodeValid()) {
+                return $bill;
+            }
+        }
+
+        throw BoletoWinnerException::invalidInput($barcode);
+    }
+
+    /**
+     * @throws BoletoWinnerException
+     */
+    private function sanitizeInput(string $barcodeOrWritableLine): string
+    {
+        $input = preg_replace('/[^0-9]/', '', $barcodeOrWritableLine);
+        if (empty($input)) {
+            throw BoletoWinnerException::inputRequired();
+        }
+
+        return $input;
     }
 }

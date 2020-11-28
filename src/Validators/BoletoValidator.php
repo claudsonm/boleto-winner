@@ -2,19 +2,18 @@
 
 namespace Claudsonm\BoletoWinner\Validators;
 
-use Claudsonm\BoletoWinner\Bill;
-
 class BoletoValidator implements Validator
 {
     /**
      * {@inheritdoc}
      */
-    public function verifyWritableLine(Bill $bill): bool
+    public function verifyWritableLine(string $writableLine): bool
     {
-        $writableLine = $bill->getWritableLine();
-        $blocks[] = substr($writableLine, 0, 10);
-        $blocks[] = substr($writableLine, 10, 11);
-        $blocks[] = substr($writableLine, 21, 11);
+        $blocks = [
+            substr($writableLine, 0, 10),
+            substr($writableLine, 10, 11),
+            substr($writableLine, 21, 11),
+        ];
 
         $blocksValidated = 0;
         foreach ($blocks as $block) {
@@ -32,9 +31,8 @@ class BoletoValidator implements Validator
     /**
      * {@inheritdoc}
      */
-    public function verifyBarcode(Bill $bill): bool
+    public function verifyBarcode(string $barcode): bool
     {
-        $barcode = $bill->getBarcode();
         $barcodeVerificationDigit = substr($barcode, 4, 1);
         $blockInputNumbers = substr($barcode, 0, 4);
         $blockInputNumbers .= substr($barcode, 5);

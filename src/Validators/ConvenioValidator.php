@@ -2,7 +2,6 @@
 
 namespace Claudsonm\BoletoWinner\Validators;
 
-use Claudsonm\BoletoWinner\Bill;
 use Claudsonm\BoletoWinner\Convenio;
 
 class ConvenioValidator implements Validator
@@ -10,9 +9,8 @@ class ConvenioValidator implements Validator
     /**
      * {@inheritdoc}
      */
-    public function verifyWritableLine(Bill $bill): bool
+    public function verifyWritableLine(string $writableLine): bool
     {
-        $writableLine = $bill->getWritableLine();
         $blocks = str_split($writableLine, 12);
         $isModule10 = in_array($writableLine[2], Convenio::USES_MODULE_10);
 
@@ -33,9 +31,8 @@ class ConvenioValidator implements Validator
     /**
      * {@inheritdoc}
      */
-    public function verifyBarcode(Bill $bill): bool
+    public function verifyBarcode(string $barcode): bool
     {
-        $barcode = $bill->getBarcode();
         $effectiveValueOrReferenceIdentifier = $barcode[2];
         if (! in_array($effectiveValueOrReferenceIdentifier, Convenio::AVAILABLE_CODES)) {
             return false;

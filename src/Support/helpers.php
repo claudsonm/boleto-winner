@@ -1,5 +1,15 @@
 <?php
 
+if (! function_exists('starts_with')) {
+    /**
+     * Checks if a string starts with a given substring.
+     */
+    function starts_with(string $needle, string $haystack): bool
+    {
+        return substr($haystack, 0, strlen($needle)) === $needle;
+    }
+}
+
 if (! function_exists('module10')) {
     /**
      * Calculates the module 10 for the given input.
