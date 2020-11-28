@@ -6,7 +6,6 @@ use Claudsonm\BoletoWinner\Boleto;
 use Claudsonm\BoletoWinner\Convenio;
 use Claudsonm\BoletoWinner\Exceptions\BoletoWinnerException;
 use Claudsonm\BoletoWinner\Factories\BillFactory;
-use Claudsonm\BoletoWinner\Tests\Dummies\DummyBill;
 use PHPUnit\Framework\TestCase;
 
 class BillFactoryTest extends TestCase
