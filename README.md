@@ -5,7 +5,28 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/claudsonm/boleto-winner?logo=scrutinizer-CI&labelColor=8A9296&logoColor=fff)](https://scrutinizer-ci.com/g/claudsonm/boleto-winner/?branch=master)
 [![Code Quality](https://img.shields.io/scrutinizer/quality/g/claudsonm/boleto-winner?logo=scrutinizer-ci&labelColor=8A9296&logoColor=fff)](https://scrutinizer-ci.com/g/claudsonm/boleto-winner/?branch=master)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Pacote para validar, converter e obter dados contidos nos códigos de barra de
+boletos e convênios.
+
+## Nomenclaturas
+
+### Boleto vs Convênio
+
+Uma conta de convênio (também conhecida como "conta de
+concessionária") geralmente é emitida por concessionárias de serviço, como no
+caso de grande parte das contas de energia elétrica, de telefonia, de gás,
+dentre outras. Podem ainda ser oriundas de órgãos governamentais, como
+acontece com o DAS (Documento de Arrecadação do Simples Nacional),
+DARF (Documento de Arrecadação de Receitas Federais),
+IPTU (Imposto Predial e Territorial Urbano), etc.
+
+### Código de Barras vs Linha Digitável
+
+Popularmente chamamos os números que aparecem acima da representação gráfica
+contida em boletos e convênios de "código de barras", o que. Entretanto, esses números
+que vez ou outra temos de digitar manualmente é na verdade  
+
+![Conta de convênio](resources/samples/sample_darf.png)
 
 ## Installation
 
@@ -47,7 +68,3 @@ If you discover any security related issues, please email claudson@outlook.com i
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## PHP Package Boilerplate
-
-This package was generated using the [PHP Package Boilerplate](https://laravelpackageboilerplate.com).
