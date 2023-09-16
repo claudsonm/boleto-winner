@@ -157,6 +157,70 @@ class BoletoWinnerTest extends TestCase
     }
 
     /** @test */
+    public function it_check_is_boleto_by_barcode_de_boleto()
+    {
+        $barcode = '23793946900000291542115092000081970400146930';
+
+        $this->assertTrue(BoletoWinner::isBoletoByBarcode($barcode));
+    }
+
+    /** @test */
+    public function it_check_is_boleto_by_barcode_de_convenio()
+    {
+        $barcode = '84660000001249800820899999319301093721978999';
+
+        $this->assertFalse(BoletoWinner::isBoletoByBarcode($barcode));
+    }
+
+    /** @test */
+    public function it_check_is_boleto_by_writable_line_de_boleto()
+    {
+        $writableLine = '23792115079200008197304001469305394690000029154';
+
+        $this->assertTrue(BoletoWinner::isBoletoByWritableLine($writableLine));
+    }
+
+    /** @test */
+    public function it_check_is_boleto_by_writable_line_de_convenio()
+    {
+        $writableLine = '846600000018249800820899999931930104937219789990';
+
+        $this->assertFalse(BoletoWinner::isBoletoByWritableLine($writableLine));
+    }
+
+    /** @test */
+    public function it_check_is_convenio_by_barcode_de_convenio()
+    {
+        $barcode = '84660000001249800820899999319301093721978999';
+
+        $this->assertTrue(BoletoWinner::isConvenioByBarcode($barcode));
+    }
+
+    /** @test */
+    public function it_check_is_convenio_by_barcode_de_boleto()
+    {
+        $barcode = '23793946900000291542115092000081970400146930';
+
+        $this->assertFalse(BoletoWinner::isConvenioByBarcode($barcode));
+    }
+
+    /** @test */
+    public function it_check_is_convenio_by_writable_line_de_convenio()
+    {
+        $writableLine = '846600000018249800820899999931930104937219789990';
+
+        $this->assertTrue(BoletoWinner::isConvenioByWritableLine($writableLine));
+    }
+
+    /** @test */
+    public function it_check_is_convenio_by_writable_line_de_boleto()
+    {
+        $writableLine = '23792115079200008197304001469305394690000029154';
+
+        $this->assertFalse(BoletoWinner::isConvenioByWritableLine($writableLine));
+    }
+
+    /** @test */
     public function it_throws_exception_when_the_method_called_do_not_exists()
     {
         $this->expectException(BadMethodCallException::class);
