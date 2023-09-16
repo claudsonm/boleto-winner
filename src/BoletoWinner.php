@@ -5,6 +5,9 @@ namespace Claudsonm\BoletoWinner;
 use BadMethodCallException;
 use Claudsonm\BoletoWinner\Exceptions\BoletoWinnerException;
 use Claudsonm\BoletoWinner\Factories\BillFactory;
+use Claudsonm\BoletoWinner\Validators\BoletoValidator;
+use Claudsonm\BoletoWinner\Validators\ConvenioValidator;
+use Throwable;
 
 /**
  * @method static bool isValidBoleto(string $barcodeOrWritableLine)
@@ -92,6 +95,70 @@ class BoletoWinner
 
             return true;
         } catch (BoletoWinnerException $exception) {
+            return false;
+        }
+    }
+
+    public static function isBoletoByBarcode(string $barcode): bool
+    {
+        try {
+            $writableLine = self::toWritableLine($barcode);
+
+            $isBoleto = (new BoletoValidator())->verifyWritableLine($writableLine);
+
+            return $isBoleto;
+
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
+
+    public static function isBoletoByWritableLine(string $writableLine): bool
+    {
+        try {
+            $writableLineClean = preg_replace('/[^0-9]/', '', $writableLine);
+
+            if (empty($writableLineClean)) {
+                throw BoletoWinnerException::inputRequired();
+            }
+
+            $isBoleto = (new BoletoValidator())->verifyWritableLine($writableLineClean);
+
+            return $isBoleto;
+
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
+
+    public static function isConvenioByBarcode(string $barcode): bool
+    {
+        try {
+            $writableLine = self::toWritableLine($barcode);
+
+            $isConvenio = (new ConvenioValidator())->verifyWritableLine($writableLine);
+
+            return $isConvenio;
+
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
+
+    public static function isConvenioByWritableLine(string $writableLine): bool
+    {
+        try {
+            $writableLineClean = preg_replace('/[^0-9]/', '', $writableLine);
+
+            if (empty($writableLineClean)) {
+                throw BoletoWinnerException::inputRequired();
+            }
+
+            $isConvenio = (new ConvenioValidator())->verifyWritableLine($writableLineClean);
+
+            return $isConvenio;
+
+        } catch (Throwable $e) {
             return false;
         }
     }
