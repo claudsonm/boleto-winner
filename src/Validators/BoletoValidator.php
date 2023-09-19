@@ -9,6 +9,16 @@ class BoletoValidator implements Validator
      */
     public function verifyWritableLine(string $writableLine): bool
     {
+        $writableLine = preg_replace('/[^0-9]/', '', $writableLine);
+
+        if (strlen($writableLine) != 47) {
+            return false;
+        }
+
+        if ($writableLine[0] == '8') {
+            return false;
+        }
+
         $blocks = [
             substr($writableLine, 0, 10),
             substr($writableLine, 10, 11),
@@ -18,8 +28,11 @@ class BoletoValidator implements Validator
         $blocksValidated = 0;
         foreach ($blocks as $block) {
             $blockLength = strlen($block) - 1;
+
             $blockInputNumbers = substr($block, 0, $blockLength);
+
             $blockVerificationDigit = $this->getLastCharacter($block);
+
             if (module10($blockInputNumbers) === $blockVerificationDigit) {
                 $blocksValidated++;
             }
@@ -33,8 +46,20 @@ class BoletoValidator implements Validator
      */
     public function verifyBarcode(string $barcode): bool
     {
+        $barcode = preg_replace('/[^0-9]/', '', $barcode);
+
+        if (strlen($barcode) != 44) {
+            return false;
+        }
+
+        if ($barcode[0] == '8') {
+            return false;
+        }
+
         $barcodeVerificationDigit = substr($barcode, 4, 1);
+
         $blockInputNumbers = substr($barcode, 0, 4);
+
         $blockInputNumbers .= substr($barcode, 5);
 
         return $this->calculateBarcodeDigit($blockInputNumbers) === $barcodeVerificationDigit;

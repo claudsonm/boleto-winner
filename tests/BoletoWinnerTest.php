@@ -37,7 +37,7 @@ class BoletoWinnerTest extends TestCase
     /** @test */
     public function it_checks_when_a_boleto_writable_line_is_valid()
     {
-        $line = '34191.79001 01043.510047 91020.150008 1 84270026000';
+        $line = '75691.30698 01015.385006 20321.010017 9 75350000157575';
 
         $this->assertTrue(BoletoWinner::isValid($line));
     }
