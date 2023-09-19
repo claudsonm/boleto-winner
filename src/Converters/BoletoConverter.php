@@ -12,6 +12,7 @@ class BoletoConverter implements Converter
     public function toBarcode(Bill $bill): string
     {
         $writableLine = $bill->getWritableLine();
+
         $barcodeParts = [
             'bankCode' => substr($writableLine, 0, 3),
             'currency' => substr($writableLine, 3, 1),
@@ -30,6 +31,7 @@ class BoletoConverter implements Converter
     public function toWritableLine(Bill $bill): string
     {
         $barcode = $bill->getBarcode();
+        
         $blocks = [
             substr($barcode, 0, 4).substr($barcode, 19, 5),
             substr($barcode, 24, 10),

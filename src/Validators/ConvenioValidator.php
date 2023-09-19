@@ -11,6 +11,8 @@ class ConvenioValidator implements Validator
      */
     public function verifyWritableLine(string $writableLine): bool
     {
+        $writableLine = preg_replace('/[^0-9]/', '', $writableLine);
+
         if (strlen($writableLine) != 48) {
             return false;
         }
@@ -51,6 +53,8 @@ class ConvenioValidator implements Validator
      */
     public function verifyBarcode(string $barcode): bool
     {
+        $barcode = preg_replace('/[^0-9]/', '', $barcode);
+        
         if (strlen($barcode) != 44) {
             return false;
         }

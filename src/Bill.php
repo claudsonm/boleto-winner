@@ -8,8 +8,11 @@ use Claudsonm\BoletoWinner\Validators\Validator;
 abstract class Bill
 {
     protected string $writableLine;
+
     protected string $barcode;
+
     protected Validator $validator;
+
     protected Converter $converter;
 
     public function __construct()
